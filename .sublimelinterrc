@@ -1,0 +1,10 @@
+{
+    "linters": {
+        "eslint": {
+            "@disable": true
+        },
+        "jshint": {
+            "@disable": true
+        }
+    }
+}
