@@ -34,9 +34,21 @@
 
     fs.forEach(function (line) {
         var scoreCard = line.split(' | ').map(function (row) {
-            return row.split(' ').map(parseFloat);
-        });
+                return row.split(' ').map(parseFloat);
+            }),
+            output = '',
+            colScores;
 
-        console.log(scoreCard);
+        for (var i = 0, j = scoreCard[0].length; i < j; i++) {
+            colScores = [];
+
+            for (var ii = 0, ij = scoreCard.length; ii < ij; ii++) {
+                colScores.push(scoreCard[ii][i]);
+            }
+
+            output += Math.max.apply(null, colScores) + ' ';
+        }
+
+        console.log(output);
     });
 }());
