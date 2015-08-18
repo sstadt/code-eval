@@ -2,6 +2,10 @@
 (function () {
     "use strict";
 
+    /*
+        Challenge Description
+    */
+
     var fs = [
         'test line 1',
         'test line 3',
