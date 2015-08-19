@@ -27,6 +27,7 @@
         d6
         e5
         b1
+
         OUTPUT SAMPLE:
 
         Print to stdout all possible positions for the next move of the 
@@ -39,16 +40,53 @@
         b5 b7 c4 c8 e4 e8 f5 f7
         c4 c6 d3 d7 f3 f7 g4 g6
         a3 c3 d2
-
     */
 
+    var chessBoardColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
     var fs = [
-        'test line 1',
-        'test line 3',
-        'test line 3'
+        'g2',
+        'a1',
+        'd6',
+        'e5',
+        'b1'
     ];
 
     fs.forEach(function (line) {
-        console.log(line);
+        var startCol = chessBoardColumns.indexOf(line.split('')[0]) + 1,
+            startRow = parseInt(line.split('')[1], 10),
+            moves = [],
+            output;
+
+        moves.push(getMove(startRow, startCol, 2, 1));
+        moves.push(getMove(startRow, startCol, 2, -1));
+        moves.push(getMove(startRow, startCol, -2, 1));
+        moves.push(getMove(startRow, startCol, -2, -1));
+        moves.push(getMove(startRow, startCol, 1, 2));
+        moves.push(getMove(startRow, startCol, 1, -2));
+        moves.push(getMove(startRow, startCol, -1, 2));
+        moves.push(getMove(startRow, startCol, -1, -2));
+
+        output = moves.sort(function(p, c){
+            if(p < c) return -1;
+            if(p > c) return 1;
+            return 0;
+        }).filter(function (val) {
+            return val !== 'invalid';
+        }).join(' ');
+
+        console.log(output);
     });
+
+    function getMove(startX, startY, horizontalOffset, verticalOffset) {
+        var newX = startX + horizontalOffset,
+            newY = startY + verticalOffset;
+
+        return (isValidPosition(newX, newY)) ? chessBoardColumns[newY - 1] + String(newX) : 'invalid'; 
+    }
+
+    function isValidPosition(x, y) {
+        return (x > 0 && x < 9 && y > 0 && y < 9);
+    }
+
 }());
