@@ -44,6 +44,8 @@
 
     var chessBoardColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
+    var potentialMoves = [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [1, -2], [-1, 2], [-1, -2]];
+
     var fs = [
         'g2',
         'a1',
@@ -58,16 +60,11 @@
             moves = [],
             output;
 
-        moves.push(getMove(startRow, startCol, 2, 1));
-        moves.push(getMove(startRow, startCol, 2, -1));
-        moves.push(getMove(startRow, startCol, -2, 1));
-        moves.push(getMove(startRow, startCol, -2, -1));
-        moves.push(getMove(startRow, startCol, 1, 2));
-        moves.push(getMove(startRow, startCol, 1, -2));
-        moves.push(getMove(startRow, startCol, -1, 2));
-        moves.push(getMove(startRow, startCol, -1, -2));
+        for (var i = 0, j = potentialMoves.length; i < j; i++) {
+            moves.push(getMove(startRow, startCol, potentialMoves[i][0], potentialMoves[i][1]));            
+        }
 
-        output = moves.sort(function(p, c){
+        output = moves.sort(function (p, c) {
             if(p < c) return -1;
             if(p > c) return 1;
             return 0;
