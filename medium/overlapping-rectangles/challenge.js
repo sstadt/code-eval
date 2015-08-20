@@ -29,7 +29,8 @@
 
     var fs = [
         '-3,3,-1,1,1,-1,3,-3',
-        '-3,3,-1,1,-2,4,2,2'
+        '-3,3,-1,1,-2,4,2,2',
+        '-1,1,1,-1,-2,2,0,0',
     ];
 
     function Rectangle(left, top, right, bottom) {
@@ -40,10 +41,13 @@
     }
 
     Rectangle.prototype.contains = function (y, x) {
+        console.log('checking point ' + x + ', ' + y);
         return (x >= this.left && x <= this.right && y >= this.bottom && y <= this.top);
     }
 
     Rectangle.prototype.overlapsRect = function (rect) {
+        console.log('this: ', this);
+        console.log('rect: ', rect);
         return (this.contains(rect.top, rect.left) || this.contains(rect.top, rect.right) || this.contains(rect.bottom, rect.left) || this.contains(rect.bottom, rect.right));
     }
 
@@ -54,6 +58,7 @@
             output = (rect1.overlapsRect(rect2)) ? 'True' : 'False';
 
         console.log(output);
+        console.log('-------------------');
     });
 
 }());
