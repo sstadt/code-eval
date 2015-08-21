@@ -31,6 +31,7 @@
         '-3,3,-1,1,1,-1,3,-3',
         '-3,3,-1,1,-2,4,2,2',
         '-1,1,1,-1,-2,2,0,0',
+        '0,1,2,0,1,2,4,-1'
     ];
 
     function Rectangle(left, top, right, bottom) {
@@ -43,13 +44,19 @@
     Rectangle.prototype.contains = function (y, x) {
         console.log('checking point ' + x + ', ' + y);
         return (x >= this.left && x <= this.right && y >= this.bottom && y <= this.top);
-    }
+    };
 
     Rectangle.prototype.overlapsRect = function (rect) {
-        console.log('this: ', this);
-        console.log('rect: ', rect);
-        return (this.contains(rect.top, rect.left) || this.contains(rect.top, rect.right) || this.contains(rect.bottom, rect.left) || this.contains(rect.bottom, rect.right));
-    }
+        for (var y = rect.bottom; y < rect.top; y++) {
+            for (var x = rect.left; x < rect.right; x++) {
+                if (this.contains(y, x)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    };
 
     fs.forEach(function (line) {
         var params = line.split(',').map(parseFloat),
@@ -58,7 +65,6 @@
             output = (rect1.overlapsRect(rect2)) ? 'True' : 'False';
 
         console.log(output);
-        console.log('-------------------');
     });
 
 }());
