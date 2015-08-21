@@ -42,13 +42,13 @@
     }
 
     Rectangle.prototype.contains = function (y, x) {
-        console.log('checking point ' + x + ', ' + y);
+        console.log('checking point ' + y + ', ' + x);
         return (x >= this.left && x <= this.right && y >= this.bottom && y <= this.top);
     };
 
     Rectangle.prototype.overlapsRect = function (rect) {
-        for (var y = rect.bottom; y < rect.top; y++) {
-            for (var x = rect.left; x < rect.right; x++) {
+        for (var y = rect.bottom; y <= rect.top; y++) {
+            for (var x = rect.left; x <= rect.right; x++) {
                 if (this.contains(y, x)) {
                     return true;
                 }
