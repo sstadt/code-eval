@@ -42,7 +42,6 @@
     }
 
     Rectangle.prototype.contains = function (y, x) {
-        console.log('checking point ' + y + ', ' + x);
         return (x >= this.left && x <= this.right && y >= this.bottom && y <= this.top);
     };
 
