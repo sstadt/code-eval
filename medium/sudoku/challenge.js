@@ -34,7 +34,7 @@
     var fs = [
         '4;1,4,2,3,2,3,1,4,4,2,3,1,3,1,4,2',
         '4;2,1,3,2,3,2,1,4,1,4,2,3,2,3,4,1',
-        '9;1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1'
+        '9;1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9'
     ];
 
     fs.forEach(function (line) {
@@ -46,10 +46,91 @@
                 return row.split(',').map(parseFloat);
             });
 
-        console.log(regexStr);
-        console.log(line);
-        console.log(solution);
+        console.log(checkSolution(solution));
     });
+
+    function ucFirst(str) {
+        str = String(str);
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function checkSolution(solution) {
+        return ucFirst(checkRows(solution) && checkCols(solution) && checkBlocks(solution));
+    }
+
+    function verifyBlock(arr) {
+        var nums = [];
+
+        for (var i = 0, j = arr.length; i < j; i++) {
+            if (nums.indexOf(arr[i]) === -1) {
+                nums.push(arr[i]);
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function checkRows(solution) {
+        var valid;
+
+        for (var i = 0, j = solution.length; i < j; i++) {
+            valid = verifyBlock(solution[i]);
+
+            if (!valid) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function checkCols(solution) {
+        var size = solution.length,
+            colVals,
+            valid;
+
+        for (var col = 0; col < size; col++) {
+            colVals = [];
+
+            for (var row = 0; row < size; row++) {
+                colVals.push(solution[row][col]);
+            }
+
+            valid = verifyBlock(colVals);
+
+            if (!valid) return false;
+        }
+
+        return true;
+    }
+
+    function checkBlocks(solution) {
+        var blockSize = Math.sqrt(solution.length),
+            column = 0,
+            square, row, valid;
+
+        for (var block = 0, numBlocks = solution.length; block < numBlocks; block++) {
+            square = [];
+            row = Math.floor(block / blockSize);
+
+            for (var i = row * blockSize, j = i + blockSize; i < j; i++) {
+                for (var ii = column * blockSize, ij = ii + blockSize; ii < ij; ii++) {
+                    square.push(solution[i][ii]);
+                }
+            }
+
+            column++;
+            if (column >= blockSize) column = 0;
+
+            valid = verifyBlock(square);
+
+            if (!valid) return false;
+        }
+
+        return true;
+    }
 
 }());
 
