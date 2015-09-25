@@ -60,9 +60,11 @@
     */
 
     var fs = [
-        'test line 1',
-        'test line 2',
-        'test line 3'
+        '10110001 11111000 11111110 11111111 11111111 11111111 11111111 11101101 11111111 01111111 11110010 10100111;84.525784',
+        '11111111 11110110 11101111 11110111 10111110 11110110 10111011 10100111 11111100 01100100 11111101 01011110;5.57',
+        '11000010 00001111 11111111 10111111 11101011 11110011 01111110 11011111 11111111 11111111 11111001 01101110;857.71284',
+        '11111111 01110111 10111011 11001101 11111011 11101010 11110100 01001101 11011111 11111010 10010110 10111111;66.92',
+        '11111011 10010001 11111011 11111101 10011111 10111110 01111100 11011101 10111001 11111110 11101111 11110110;188.87'
     ];
 
     function Digit(binary) {
@@ -81,13 +83,15 @@
         }
     }
 
-    Digit.prototype.canDisplayDigit = function (digit, decimal) {
+    Digit.prototype.canDisplayDigit = function (digit) {
         var ok = true,
             position;
 
-        if (decimal && this.positions[7] === 0) {
+        if (digit.length > 1 && this.positions[7] === 0) {
             return false;
         }
+
+        digit = (digit.length > 1) ? parseInt(digit.charAt(0), 10) : parseInt(digit, 10);
 
         for (var i = 0, j = this.numMap[digit].length; i < j; i++) {
             position = this.numMap[digit][i] - 1;
@@ -111,18 +115,32 @@
         }
     }
 
-    var testBinary = '01100001',
-        testNum = 1,
-        testDigit = new Digit(testBinary);
+    Led.prototype.canDisplayNumber = function (num) {
+        var nums = num.match(/[0-9](\.)?/g),
+            ok = true;
 
-    console.log(testDigit);
-    console.log(testDigit.canDisplayDigit(testNum));
+        console.log(this.digits);
+        console.log('  ' + JSON.stringify(nums));
+
+        for (var i = 0, j = nums.length; i < j; i++) {
+            console.log('    checking digit ' + nums[i] + ' against ' + this.digits[i].positions);
+            if (!this.digits[i].canDisplayDigit(nums[i])) {
+                ok = false;
+                break;
+            }
+        }
+
+        return ok;
+    }
 
     fs.forEach(function (line) {
         var params = line.split(';'),
             status = params[0],
-            displayNum = params[1];
+            displayNum = params[1],
+            display = new Led(status);
 
-        console.log(line);
+        console.log('checking display against ' + displayNum);
+        console.log('-------------------------------------------')
+        console.log(display.canDisplayNumber(displayNum));
     });
 }());
