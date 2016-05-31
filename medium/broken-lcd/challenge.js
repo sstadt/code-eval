@@ -119,10 +119,15 @@
         var nums = num.match(/[0-9](\.)?/g),
             ok;
 
+        console.log(this.digits);
+        console.log('  ' + JSON.stringify(nums));
+
         for (var start = 0, lastStart = this.digits.length - nums.length; start < lastStart; start++) {
+            console.log('    starting at ' + start);
             ok = true;
 
             for (var i = 0, j = nums.length; i < j; i++) {
+                console.log('    checking digit ' + nums[i] + ' against ' + this.digits[start + i].positions);
                 if (!this.digits[start + i].canDisplayDigit(nums[i])) {
                     ok = false;
                     break;
@@ -142,6 +147,8 @@
             displayNum = params[1],
             display = new Led(status);
 
+        console.log('checking display against ' + displayNum);
+        console.log('-------------------------------------------');
         console.log(display.canDisplayNumber(displayNum) ? 1 : 0);
     });
 }());
